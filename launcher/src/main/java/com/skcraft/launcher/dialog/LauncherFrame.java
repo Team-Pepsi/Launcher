@@ -27,11 +27,13 @@ import javax.swing.event.TableModelListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.net.URI;
 
 import static com.skcraft.launcher.util.SharedLocale.tr;
 
@@ -109,8 +111,20 @@ public class LauncherFrame extends JFrame {
         splitPane.setOpaque(false);
         container.add(splitPane, "grow, wrap, span 5, gapbottom unrel, w null:680, h null:350");
         SwingHelper.flattenJSplitPane(splitPane);
-        container.add(refreshButton);
-        container.add(updateCheck);
+        //container.add(refreshButton);
+        //container.add(updateCheck);
+        JLabel sourceCodeLabel;
+        container.add(sourceCodeLabel = new JLabel("<html><a href=\"https://github.com/Team-Pepsi/pepsipack-launcher\">Launcher source code</a></html>"));
+        sourceCodeLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    Desktop.getDesktop().browse(new URI("https://github.com/Team-Pepsi/pepsipack-launcher"));
+                } catch (Throwable e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
         container.add(selfUpdateButton);
         container.add(optionsButton);
         container.add(launchButton);
