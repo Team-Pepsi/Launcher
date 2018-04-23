@@ -13,6 +13,7 @@ import com.skcraft.launcher.launch.JavaProcessBuilder;
 import com.skcraft.launcher.model.modpack.LaunchModifier;
 import lombok.Data;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -33,6 +34,7 @@ public class Instance implements Comparable<Instance> {
     private Date lastAccessed;
     @JsonProperty("launch")
     private LaunchModifier launchModifier;
+    @JsonIgnore private Icon icon;
 
     @JsonIgnore private File dir;
     @JsonIgnore private URL manifestURL;

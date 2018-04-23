@@ -59,12 +59,7 @@ public class Creator {
     }
 
     private static File getAppDataDir() {
-        String osName = System.getProperty("os.name").toLowerCase();
-        if (osName.contains("win")) {
-            return new File(getFileChooseDefaultDir(), "SKCraft Modpack Creator");
-        } else {
-            return new File(System.getProperty("user.home"), ".skcraftcreator");
-        }
+        return new File(".", ".skcraftcreator");
     }
 
     public static void main(String[] args) throws Exception {

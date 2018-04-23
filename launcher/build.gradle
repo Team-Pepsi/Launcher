@@ -33,3 +33,5 @@ shadowJar {
 }
 
 build.dependsOn(shadowJar)
+
+sourceCompatibility = targetCompatibility = "1.8"

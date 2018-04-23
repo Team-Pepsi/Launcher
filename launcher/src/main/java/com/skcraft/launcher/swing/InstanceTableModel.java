@@ -99,10 +99,8 @@ public class InstanceTableModel extends AbstractTableModel {
                 instance = instances.get(rowIndex);
                 if (!instance.isLocal()) {
                     return downloadIcon;
-                } else if (instance.getManifestURL() != null) {
-                    return instanceIcon;
                 } else {
-                    return customInstanceIcon;
+                    return instance.getIcon() == null ? customInstanceIcon : instance.getIcon();
                 }
             case 1:
                 instance = instances.get(rowIndex);

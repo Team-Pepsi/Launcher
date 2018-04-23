@@ -35,6 +35,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -315,6 +316,21 @@ public final class SwingHelper {
             return new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_SMOOTH));
         } else {
             return new EmptyIcon(width, height);
+        }
+    }
+
+    public static Icon createIcon(File file)    {
+        try {
+            BufferedImage image = ImageIO.read(file);
+
+            if (image != null) {
+                return new ImageIcon(image.getScaledInstance(16, 16, Image.SCALE_SMOOTH));
+            } else {
+                return new EmptyIcon(16, 16);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

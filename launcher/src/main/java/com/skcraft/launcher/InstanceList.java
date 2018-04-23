@@ -11,6 +11,7 @@ import com.skcraft.concurrency.ProgressObservable;
 import com.skcraft.launcher.model.modpack.ManifestInfo;
 import com.skcraft.launcher.model.modpack.PackageList;
 import com.skcraft.launcher.persistence.Persistence;
+import com.skcraft.launcher.swing.SwingHelper;
 import com.skcraft.launcher.util.HttpRequest;
 import com.skcraft.launcher.util.SharedLocale;
 import lombok.Getter;
@@ -122,7 +123,10 @@ public class InstanceList {
                     instance.setName(dir.getName());
                     instance.setSelected(true);
                     instance.setLocal(true);
+                    instance.setIcon(SwingHelper.createIcon(new File(dir, instance.getName() + ".png")));
+
                     local.add(instance);
+
 
                     log.info(instance.getName() + " local instance found at " + dir.getAbsolutePath());
                 }
@@ -182,6 +186,17 @@ public class InstanceList {
                         instance.setUpdatePending(true);
                         instance.setLocal(false);
                         remote.add(instance);
+
+                        try {
+                            HttpRequest
+                                    .get(new URL(packagesURL.toString().replace("packages.json", manifest.getName() + ".png")))
+                                    .execute()
+                                    .expectResponseCode(200)
+                                    .returnContent()
+                                    .saveContent(new File(dir, manifest.getName() + ".png"));
+                        } catch (IOException e) {
+                            //ok whatever
+                        }
 
                         log.info("Available remote instance: '" + instance.getName() +
                                 "' at version " + instance.getVersion());
