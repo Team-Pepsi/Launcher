@@ -87,6 +87,8 @@ public class UpdateManager {
                             SharedLocale.tr("launcher.selfUpdateCompleteTitle"),
                             null,
                             JOptionPane.INFORMATION_MESSAGE);
+
+                    System.exit(0);
                 }
 
                 @Override

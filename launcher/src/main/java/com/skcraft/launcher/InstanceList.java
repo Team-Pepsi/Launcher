@@ -123,7 +123,20 @@ public class InstanceList {
                     instance.setName(dir.getName());
                     instance.setSelected(true);
                     instance.setLocal(true);
-                    instance.setIcon(SwingHelper.createIcon(new File(dir, instance.getName() + ".png")));
+                    file = new File(dir, instance.getName() + ".png");
+                    if (!file.exists()) {
+                        try {
+                            HttpRequest
+                                    .get(new URL(launcher.getPackagesURL().toString().replace("packages.json", instance.getName() + ".png")))
+                                    .execute()
+                                    .expectResponseCode(200)
+                                    .returnContent()
+                                    .saveContent(file);
+                        } catch (IOException e) {
+                            //ok whatever
+                        }
+                    }
+                    instance.setIcon(SwingHelper.createIcon(file));
 
                     local.add(instance);
 

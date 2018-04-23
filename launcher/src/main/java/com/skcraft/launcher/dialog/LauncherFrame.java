@@ -57,6 +57,7 @@ public class LauncherFrame extends JFrame {
     private final JButton optionsButton = new JButton(SharedLocale.tr("launcher.options"));
     private final JButton selfUpdateButton = new JButton(SharedLocale.tr("launcher.updateLauncher"));
     private final JCheckBox updateCheck = new JCheckBox(SharedLocale.tr("launcher.downloadUpdates"));
+    private static boolean UPDATED = false;
 
     /**
      * Create a new frame.
@@ -98,7 +99,23 @@ public class LauncherFrame extends JFrame {
             public void propertyChange(PropertyChangeEvent evt) {
                 if (evt.getPropertyName().equals("pendingUpdate")) {
                     selfUpdateButton.setVisible((Boolean) evt.getNewValue());
-
+                    if (!UPDATED && (Boolean) evt.getNewValue()) {
+                        UPDATED = true;
+                        new Thread()    {
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(2500);
+                                    SwingUtilities.invokeAndWait(() -> {
+                                        launcher.getUpdateManager().performUpdate(LauncherFrame.this);
+                                    });
+                                } catch (Exception e)   {
+                                    e.printStackTrace();
+                                    System.exit(1);
+                                }
+                            }
+                        }.start();
+                    }
                 }
             }
         });
