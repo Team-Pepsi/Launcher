@@ -37,6 +37,7 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.management.ManagementFactory;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Locale;
@@ -412,6 +413,18 @@ public final class Launcher {
      * @param args args
      */
     public static void main(final String[] args) {
+        if (true)   {
+            try {
+                Class<?> clazz = Class.forName("com.skcraft.launcher.FancyLauncher");
+                Method m = clazz.getDeclaredMethod("main", String[].class);
+                m.invoke(null, new Object[]{args});
+            } catch (Exception e)   {
+                e.printStackTrace();
+                System.exit(1);
+            } finally {
+                return;
+            }
+        }
         setupLogger();
 
         SwingUtilities.invokeLater(new Runnable() {
