@@ -30,6 +30,7 @@ public class Configuration {
     private int windowWidth = 854;
     private int widowHeight = 480;
     private boolean proxyEnabled = false;
+    private boolean exitOnStart = false;
     private String proxyHost = "localhost";
     private int proxyPort = 8080;
     private String proxyUsername;

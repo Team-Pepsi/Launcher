@@ -153,7 +153,11 @@ public class Runner implements Callable<Process>, ProgressObservable {
 
         progress = new DefaultProgress(1, SharedLocale.tr("runner.startingJava"));
 
-        return processBuilder.start();
+        Process process = processBuilder.start();
+        if (config.isExitOnStart()) {
+            System.exit(0);
+        }
+        return process;
     }
 
     /**
