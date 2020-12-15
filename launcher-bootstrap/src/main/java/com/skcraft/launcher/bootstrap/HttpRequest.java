@@ -9,9 +9,6 @@ package com.skcraft.launcher.bootstrap;
 import lombok.Getter;
 import lombok.extern.java.Log;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
@@ -110,6 +107,7 @@ public class HttpRequest implements Closeable, ProgressObservable {
             conn.setRequestMethod(method);
             conn.setUseCaches(false);
             conn.setDoOutput(true);
+            conn.setInstanceFollowRedirects(true);
             conn.setReadTimeout(READ_TIMEOUT);
 
             conn.connect();
@@ -410,15 +408,6 @@ public class HttpRequest implements Closeable, ProgressObservable {
         }
 
         /**
-         * Return the result as bytes.
-         *
-         * @return the data
-         */
-        public byte[] asBytes() {
-            return data;
-        }
-
-        /**
          * Return the result as a string.
          *
          * @param encoding the encoding
@@ -427,51 +416,6 @@ public class HttpRequest implements Closeable, ProgressObservable {
          */
         public String asString(String encoding) throws IOException {
             return new String(data, encoding);
-        }
-
-        /**
-         * Return the result as an instance of the given class that has been
-         * deserialized from a XML payload.
-         *
-         * @return the object
-         * @throws java.io.IOException on I/O error
-         */
-        @SuppressWarnings("unchecked")
-        public <T> T asXml(Class<T> cls) throws IOException {
-            try {
-                JAXBContext context = JAXBContext.newInstance(cls);
-                Unmarshaller um = context.createUnmarshaller();
-                return (T) um.unmarshal(new ByteArrayInputStream(data));
-            } catch (JAXBException e) {
-                throw new IOException(e);
-            }
-        }
-
-        /**
-         * Save the result to a file.
-         *
-         * @param file the file
-         * @return this object
-         * @throws java.io.IOException  on I/O error
-         * @throws InterruptedException on interruption
-         */
-        public BufferedResponse saveContent(File file) throws IOException, InterruptedException {
-            FileOutputStream fos = null;
-            BufferedOutputStream bos = null;
-
-            file.getParentFile().mkdirs();
-
-            try {
-                fos = new FileOutputStream(file);
-                bos = new BufferedOutputStream(fos);
-
-                saveContent(bos);
-            } finally {
-                closeQuietly(bos);
-                closeQuietly(fos);
-            }
-
-            return this;
         }
 
         /**

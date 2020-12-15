@@ -61,7 +61,7 @@ public class Downloader implements Runnable, ProgressObservable {
             }
         });
 
-        File finalFile = new File(bootstrap.getBinariesDir(), System.currentTimeMillis() + ".jar.pack");
+        File finalFile = new File(bootstrap.getBinariesDir(), System.currentTimeMillis() + ".jar");
         File tempFile = new File(finalFile.getParentFile(), finalFile.getName() + ".tmp");
         URL updateUrl = HttpRequest.url(bootstrap.getProperties().getProperty("latestUrl"));
 
