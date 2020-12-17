@@ -72,17 +72,19 @@ public class ClientFileCollector extends DirectoryWalker {
         } else {
             location = hash.substring(0, 2) + "/" + hash.substring(2, 4) + "/" + hash;
         }
-        
-        File destPath = new File(destDir, location);
+
         entry.setHash(hash);
         entry.setLocation(location);
         entry.setTo(to);
         entry.setSize(file.length());
         applicator.apply(entry);
-        destPath.getParentFile().mkdirs();
         ClientFileCollector.log.info(String.format("Adding %s from %s...", relPath, file.getAbsolutePath()));
         if (copy) {
-            Files.copy(file, destPath);
+            File destPath = new File(destDir, location);
+            if (!destPath.exists()) {
+                destPath.getParentFile().mkdirs();
+                Files.copy(file, destPath);
+            }
         }
         manifest.getTasks().add(entry);
     }
