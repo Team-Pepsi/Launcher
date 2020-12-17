@@ -206,7 +206,6 @@ public class GenerateListingController {
                                 "Success", null, JOptionPane.INFORMATION_MESSAGE);
                     }
                     dialog.dispose();
-                    SwingHelper.browseDir(destDir, dialog);
                 }, ex -> {}, SwingExecutor.INSTANCE);
 
         ProgressDialog.showProgress(dialog, deferred, progress, "Writing package listing...", "Writing package listing...");
